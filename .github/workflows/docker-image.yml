@@ -1,0 +1,18 @@
+name: Set up WireGuard Connection
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  wireguard:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up WireGuard Connection
+      uses: niklaskeerl/easy-wireguard-action@v2
+      with:
+        WG_CONFIG_FILE: ${{ secrets.WG_CONFIG_FILE }}
