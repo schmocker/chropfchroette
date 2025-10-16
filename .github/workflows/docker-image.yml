@@ -1,4 +1,4 @@
-name: Set up WireGuard Connection
+name: Deploy to server
 
 on:
   push:
@@ -12,10 +12,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up WireGuard Connection
-      uses: niklaskeerl/easy-wireguard-action@v2
-      with:
-        WG_CONFIG_FILE: ${{ secrets.WG_CONFIG_FILE }}
+    - run: |
+        sudo apt install resolvconf
+        sudo apt install wireguard
+        echo "${{ secrets.WG_CONFIG_FILE }}" > wg0.conf
+        sudo chmod 600 wg0.conf
+        echo "setting config"
+        sudo wg-quick up ./wg0.conf
+      shell: bash
 
     # ssh into server using wireguard connection
     - name: SSH into server
