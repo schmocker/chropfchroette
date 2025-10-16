@@ -37,4 +37,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo "Connected to server via WireGuard"
+            cd chropfchroette
+            git pull
+            docker compose down
+            docker compose up -d --build
