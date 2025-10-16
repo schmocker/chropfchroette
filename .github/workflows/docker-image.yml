@@ -9,22 +9,32 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install WireGuard tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard
+      - name: Write WireGuard config
+        env:
+          WG_CFG: ${{ secrets.WG_CONFIG_FILE }}
+        run: |
+          echo "$WG_CFG" | sudo tee /etc/wireguard/wg0.conf > /dev/null
+          sudo chmod 600 /etc/wireguard/wg0.conf
+      - name: Bring up interface
+        run: |
+          sudo wg-quick up wg0
+      - name: Verify
+        run: |
+          ip addr show wg0
+          sudo wg show
 
-    - name: setup wireguard
-      run: |
-        sudo apt install wireguard
-        echo "${{ secrets.WG_CONFIG_FILE }}" > wg0.conf
-        sudo wg-quick up ./wg0.conf
-      shell: bash
-
-    # ssh into server using wireguard connection
-    - name: SSH into server
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.SERVER_IP }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          echo "Connected to server via WireGuard"
+      # ssh into server using wireguard connection
+      - name: SSH into server
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            echo "Connected to server via WireGuard"
