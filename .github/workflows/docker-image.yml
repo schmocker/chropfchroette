@@ -6,13 +6,14 @@ on:
       - main
 
 jobs:
-  wireguard:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - run: |
+    - name: setup wireguard
+      run: |
         sudo apt install wireguard
         echo "${{ secrets.WG_CONFIG_FILE }}" > wg0.conf
         sudo wg-quick up ./wg0.conf
