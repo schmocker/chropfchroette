@@ -1,9 +1,14 @@
 name: Deploy to server
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+
+concurrency:
+  group: cicd
+  cancel-in-progress: true
 
 jobs:
   deploy:
