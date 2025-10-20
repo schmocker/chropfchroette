@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div class="container-fluid text-center p-5">
+    <div class="container-fluid text-center p-5 d-flex" style="min-height: 100vh">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -13,7 +13,7 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        <div class="row align-items-center">
+        <div class="row flex-grow-1 align-items-center">
             <div class="col-lg">
                 <a href="{{ url_for('home') }}">
                     <img src="{{ url_for('static', filename='ChropfChroetteSquare.png') }}"
@@ -23,13 +23,14 @@
                 </a>
             </div>
             <div class="col-lg">
-                <h1 class="text-center my-4">Badenfahrt 2027:
-                    <a href="https://badenfahrt.ch/" target="_blank"
-                              class="text-dark">ECHO</a>
-                </h1>
-                <h2>D'Chropf Chrötte send weder debii!</h2>
-                <h2 class="mt-5" id="countdown"></h2>
-
+                <a href="https://badenfahrt.ch/" target="_blank"
+                   class="text-dark">
+                    <img src="{{ url_for('static', filename='logo_badenfahrt27_echo_quer_sw.png') }}"
+                         class="img-fluid mx-auto d-block"
+                         alt="Badenfahrt 2027 ECHO Logo"
+                    >
+                </a>
+                <h2 class="mt-5">D'Chropf Chrötte send weder debii!</h2>
                 <form class="row g-3 justify-content-center my-4" method="POST">
                     <div class="col-auto">
                         {{ form.email.label(class='visually-hidden', for="inputEmail") }}
@@ -41,37 +42,7 @@
                         {{ form.submit(class="btn btn-primary mb-3") }}
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
-
-
-    <script>
-        // Set the target date
-        const targetDate = new Date('2027-08-20T00:00:00');
-        const countdownEl = document.getElementById('countdown');
-
-        function updateCountdown() {
-            const now = new Date();
-            const diff = targetDate - now;
-
-            if (diff <= 0) {
-                countdownEl.textContent = "The event has started!";
-                clearInterval(timer);
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-            const seconds = Math.floor((diff / 1000) % 60);
-
-            countdownEl.textContent =
-                `Nor no ${days} Täg ${hours}, Stonde ond ${minutes} Minute`;
-        }
-
-        updateCountdown();
-        const timer = setInterval(updateCountdown, 1000);
-    </script>
 {% endblock %}

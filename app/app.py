@@ -17,7 +17,7 @@ csrf = CSRFProtect(app)
 
 # Configure PostgreSQL connection
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = ('postgresql://chropfchroette:password@db:5432'
+    'SQLALCHEMY_DATABASE_URI'] = ('postgresql://chropfchroette:password@localhost:5432'
                                   '/chropfchroette')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -35,8 +35,7 @@ with app.app_context():
 
 class SubscribeForm(FlaskForm):
     email = EmailField('E-Mail', validators=[DataRequired(), Email(), Length(max=255)])
-    submit = SubmitField('Für Newsletter anmelden')
-
+    submit = SubmitField('Chropf Chrötte News abonnieren')
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -47,13 +46,13 @@ def home():
         try:
             db.session.add(new_subscriber)
             db.session.commit()
-            flash('Du hast dich erfolgreich angemeldet!', 'success')
+            flash('🐸 Du wirst keine Chropf Chrötte News mehr verpassen!', 'success')
             return redirect(url_for('home'))
         except IntegrityError:
             db.session.rollback()
-            flash('Diese E-Mail-Adresse ist bereits registriert.', 'info')
+            flash('🐸 Du hast die Chropf Chrötte News bereits abonniert.', 'success')
             return redirect(url_for('home'))
         except Exception as e:
             db.session.rollback()
-            flash('Ein Fehler ist aufgetreten. Bitte versuche es erneut.', 'danger')
+            flash('❌ Ein Fehler ist aufgetreten. Bitte versuche es später erneut.', 'danger')
     return render_template('index.html', form=form)
