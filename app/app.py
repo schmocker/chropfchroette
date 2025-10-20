@@ -17,7 +17,7 @@ csrf = CSRFProtect(app)
 
 # Configure PostgreSQL connection
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = ('postgresql://chropfchroette:password@localhost:5432'
+    'SQLALCHEMY_DATABASE_URI'] = ('postgresql://chropfchroette:password@db:5432'
                                   '/chropfchroette')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
