@@ -5,6 +5,7 @@ services:
       - "5430:8000"
     depends_on:
       - db
+    restart: always
   db:
     image: postgres:16-alpine
     ports:
